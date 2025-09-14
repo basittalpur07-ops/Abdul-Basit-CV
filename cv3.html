@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abdul Basit - Full Stack Developer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .name {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .title {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            font-size: 0.9em;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .contact-item a {
+            color: inherit;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .contact-item a:hover {
+            background: rgba(255,255,255,0.2);
+            text-decoration: underline;
+            transform: scale(1.05);
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.6s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            animation: expandLine 2s ease-out forwards;
+        }
+
+        @keyframes expandLine {
+            to {
+                width: 100px;
+            }
+        }
+
+        .summary {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8f4fd 100%);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #3498db;
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .education-item, .experience-item {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-left: 4px solid #3498db;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .education-item:hover, .experience-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .item-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .item-subtitle {
+            font-size: 1.1em;
+            color: #3498db;
+            margin-bottom: 5px;
+        }
+
+        .item-date {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .skill-category {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-top: 4px solid #3498db;
+            transition: all 0.3s ease;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .skill-category h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .skill-list {
+            list-style: none;
+        }
+
+        .skill-list li {
+            padding: 8px 0;
+            color: #555;
+            position: relative;
+            padding-left: 20px;
+            transition: color 0.3s ease;
+        }
+
+        .skill-list li:before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: #3498db;
+            font-size: 0.8em;
+        }
+
+        .skill-list li:hover {
+            color: #3498db;
+        }
+
+        .achievements {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .achievement-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 1em;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .print-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            z-index: 1001;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .name {
+                font-size: 2em;
+            }
+
+            .contact-info {
+                gap: 15px;
+                font-size: 0.8em;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .print-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 20px;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+
+            .print-btn, .scroll-indicator {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+    
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="name">Abdul Basit</h1>
+                <p class="title">Full Stack Developer | AI & Data Science Enthusiast</p>
+                <div class="contact-info">
+                    <div class="contact-item"><a href="#" onclick="alert('basittalpur07@gmail.com')">📧 Your Email</a></div>
+                    <div class="contact-item"><a href="#" onclick="alert('03223034320')">📱 Your Phone</a></div>
+                    <div class="contact-item"><a href="https://www.google.com/maps/dir//25.3981633,68.3414804/@25.3981664,68.3410365,20z?entry=ttu&g_ep=EgoyMDI1MDkxMC4wIKXMDSoASAFQAw%3D%3D" target="_blank">📍Location</a></div>
+                    <div class="contact-item"><a href="https://www.linkedin.com/in/basit-talpur-65537b384/" target="_blank">💼 LinkedIn</a></div>                    
+                    <div class="contact-item"><a href="https://github.com/basittalpur07-ops/" target="_blank">🐙 GitHub</a></div>
+                </div>
+            </div>
+        </header>
+
+        <main class="content">
+            <section class="section">
+                <h2 class="section-title">Professional Summary</h2>
+                <div class="summary">
+                    Passionate and dedicated Full Stack Developer with strong foundational knowledge in modern web technologies and emerging AI technologies. Currently advancing expertise in Artificial Intelligence and Data Science while maintaining hands-on experience in full-stack development. Demonstrated commitment to continuous learning and staying current with industry trends and best practices.
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Education</h2>
+                
+                <div class="education-item">
+                    <div class="item-title">Artificial Intelligence and Data Science Course</div>
+                    <div class="item-subtitle">Saylani Mass IT Training (SMIT)</div>
+                    <div class="item-date">2024 - Present</div>
+                    <ul>
+                        <li>Comprehensive training in AI fundamentals and machine learning algorithms</li>
+                        <li>Hands-on projects involving data analysis and predictive modeling</li>
+                        <li>Exposure to Python, data visualization tools, and ML frameworks</li>
+                    </ul>
+                </div>
+
+                <div class="education-item">
+                    <div class="item-title">Intermediate (Pre-Engineering/Computer Science)</div>
+                    <div class="item-subtitle">Federal Government Degree College</div>
+                    <div class="item-date">2022 - 2024</div>
+                    <p>Completed higher secondary education with focus on mathematics and science, building strong foundation in analytical and logical reasoning.</p>
+                </div>
+
+                <div class="education-item">
+                    <div class="item-title">Matriculation (Science)</div>
+                    <div class="item-subtitle">Federal Government Public School (Second Shift), Hyderabad Cantt</div>
+                    <div class="item-date">Completed 2022</div>
+                    <p>Secondary school certification with science subjects, establishing fundamental academic foundation.</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Technical Skills</h2>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h3>Programming Languages</h3>
+                        <ul class="skill-list">
+                            <li>JavaScript (ES6+)</li>
+                            <li>Python</li>
+                            <li>HTML5 & CSS3</li>
+                            <li>SQL</li>
+                        </ul>
+                    </div>
+
+                    <div class="skill-category">
+                        <h3>Frontend Development</h3>
+                        <ul class="skill-list">
+                            <li>React.js</li>
+                            <li>Vue.js / Angular</li>
+                            <li>Responsive Web Design</li>
+                            <li>Bootstrap / Tailwind CSS</li>
+                        </ul>
+                    </div>
+
+                    <div class="skill-category">
+                        <h3>Backend Development</h3>
+                        <ul class="skill-list">
+                            <li>Node.js</li>
+                            <li>Express.js</li>
+                            <li>RESTful API Development</li>
+                            <li>Database Integration</li>
+                        </ul>
+                    </div>
+
+                    <div class="skill-category">
+                        <h3>AI & Data Science</h3>
+                        <ul class="skill-list">
+                            <li>Python Libraries (Pandas, NumPy)</li>
+                            <li>Machine Learning Frameworks</li>
+                            <li>Data Analysis & Visualization</li>
+                            <li>AI Model Implementation</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Professional Experience</h2>
+                
+                <div class="experience-item">
+                    <div class="item-title">Full Stack Developer</div>
+                    <div class="item-subtitle">Self-Directed Projects & Learning</div>
+                    <div class="item-date">2023 - Present</div>
+                    <ul>
+                        <li><strong>Project Development:</strong> Designed and developed multiple full-stack web applications using modern JavaScript frameworks</li>
+                        <li><strong>Frontend Excellence:</strong> Created responsive, user-friendly interfaces with focus on UX and accessibility</li>
+                        <li><strong>Backend Implementation:</strong> Built robust server-side applications with secure API endpoints</li>
+                        <li><strong>AI Integration:</strong> Incorporated AI tools and technologies into web applications</li>
+                        <li><strong>Continuous Learning:</strong> Actively engaged in learning new technologies and best practices</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Key Achievements</h2>
+                <div class="achievements">
+                    <div class="achievement-card">
+                        <h3>🚀 Full Stack Projects</h3>
+                        <p>Successfully completed multiple full-stack projects demonstrating proficiency in end-to-end development with modern frameworks and best practices.</p>
+                    </div>
+                    
+                    <div class="achievement-card">
+                        <h3>🤖 AI Integration</h3>
+                        <p>Created innovative projects incorporating AI tools for enhanced user experience and demonstrated ability to bridge traditional web development with emerging AI technologies.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Additional Information</h2>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h3>Languages</h3>
+                        <ul class="skill-list">
+                            <li>English (Fluent)</li>
+                            <li>Urdu (Native)</li>
+                        </ul>
+                    </div>
+
+                    <div class="skill-category">
+                        <h3>Professional Attributes</h3>
+                        <ul class="skill-list">
+                            <li>Strong analytical thinking</li>
+                            <li>Excellent communication</li>
+                            <li>Self-motivated learner</li>
+                            <li>Detail-oriented approach</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <button class="print-btn" onclick="window.print()">🖨️ Print CV</button>
+
+    <script>
+        // Scroll indicator functionality
+        function updateScrollIndicator() {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+            const clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+            
+            const scrollPercent = (scrollTop / (scrollHeight - clientHeight)) * 100;
+            document.getElementById('scrollIndicator').style.width = scrollPercent + '%';
+        }
+
+        // Section visibility animation
+        function checkSectionVisibility() {
+            const sections = document.querySelectorAll('.section');
+            const windowHeight = window.innerHeight;
+            
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                
+                if (sectionTop < windowHeight * 0.8) {
+                    section.classList.add('visible');
+                }
+            });
+        }
+
+        // Smooth scrolling for better UX
+        function smoothScrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Add click to scroll to top on header
+        document.querySelector('.header').addEventListener('click', smoothScrollToTop);
+
+        // Interactive skill highlighting
+        document.querySelectorAll('.skill-list li').forEach(skill => {
+            skill.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateX(10px)';
+            });
+            
+            skill.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateX(0)';
+            });
+        });
+
+        // Add click effects to cards
+        document.querySelectorAll('.education-item, .experience-item, .skill-category').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+
+        // Typing effect for name (optional enhancement)
+        function typeWriter(element, text, speed = 100) {
+            let i = 0;
+            element.innerHTML = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            
+            type();
+        }
+
+        // Initialize animations and event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initial section visibility check
+            checkSectionVisibility();
+            
+            // Optional: Add typing effect to name
+            // const nameElement = document.querySelector('.name');
+            // typeWriter(nameElement, 'Abdul Basit', 150);
+        });
+
+        // Event listeners
+        window.addEventListener('scroll', function() {
+            updateScrollIndicator();
+            checkSectionVisibility();
+        });
+
+        // Add some interactive features for better engagement
+        document.addEventListener('keydown', function(e) {
+            // Press 'P' to print
+            if (e.key.toLowerCase() === 'p' && e.ctrlKey) {
+                e.preventDefault();
+                window.print();
+            }
+            
+            // Press 'T' to scroll to top
+            if (e.key.toLowerCase() === 't' && e.ctrlKey) {
+                e.preventDefault();
+                smoothScrollToTop();
+            }
+        });
+
+        // Performance optimization: Throttle scroll events
+        let ticking = false;
+        
+        function requestTick() {
+            if (!ticking) {
+                requestAnimationFrame(function() {
+                    updateScrollIndicator();
+                    checkSectionVisibility();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', requestTick);
+
+        console.log('🚀 Abdul Basit\'s Interactive CV Loaded Successfully!');
+        console.log('💡 Tips: Click header to scroll to top, Ctrl+P to print, Ctrl+T to scroll to top');
+    </script>
+</body>
+</html>
